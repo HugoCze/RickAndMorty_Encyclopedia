@@ -7,43 +7,39 @@
 
 import SwiftUI
 
-struct CharactersListView: View {
+struct EpisodeListView: View {
     
-    @State var characters: [Character] = []
+    @State var episodes: [Episode] = []
     
     var body: some View {
-        if characters.count == 0 {
+        if episodes.count == 0 {
             VStack {
                 ProgressView()
                     .padding()
                 Text("Space vaccum activated...")
                     .foregroundColor(.mint)
                     .onAppear(perform: {
-                        getCharacters()
+                        getEpisodes()
                     })
             }
-        } else {
-            ScrollView {
-                VStack(spacing:0) {
-                    ForEach(characters) {listedCharacters in
-                        CharacterTileView(character: listedCharacters)
-                            
-                    }
-                }
+        }
+        else { List(episodes) {
+            listedEpisodes in
+            Text(listedEpisodes.name)
+                .bold()
             }
         }
     }
     
-    
-    func getCharacters() {
+    func getEpisodes() {
         
         let api = "https://rickandmortyapi.com/api"
-        let arr1 = Array(1...50)
+        let arr1 = Array(1...51)
         let stringRepresentation = arr1.map { String($0) }.joined(separator: ",")
-        let endpoint = "/character/\(stringRepresentation)"
+        let endpoint = "/episode/\(stringRepresentation)"
         let format = "?format=json"
         let RMAPIURL = api + endpoint + format
-        
+        print(RMAPIURL)
         if let apiURL = URL(string: RMAPIURL) {
             var request = URLRequest(url: apiURL)
             request.httpMethod = "GET"
@@ -55,11 +51,11 @@ struct CharactersListView: View {
                     print("There was an error!..")
                 } else if data != nil {
                     //                    print(String(data: data!, encoding: .utf8) ?? "Error")
-                    if let characters_from_API = try? JSONDecoder()
-                        .decode([Character].self, from: data!)   {
-                        //                        print("Characters from API: ")
-                        //                        print(characters_from_API)
-                        characters = characters_from_API
+                    if let episodes_from_API = try? JSONDecoder()
+                        .decode([Episode].self, from: data!)   {
+                        //                        print("Episode from API: ")
+                        //                        print(episodes_from_API)
+                        episodes = episodes_from_API
                     }
                     
                 }
@@ -69,20 +65,17 @@ struct CharactersListView: View {
     }
 }
 
-struct Character: Codable, Identifiable  {
+struct Episode: Codable, Identifiable  {
     var id: Int
     var name: String
-    var image: String
-    var species: String
-    var status: String
-    var type: String
-    var gender: String
+    var air_date: String
+    var episode: String
     var created: String
     
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct ContentView_Previews_Episode: PreviewProvider {
     static var previews: some View {
-        CharactersListView()
+        EpisodeListView()
     }
 }

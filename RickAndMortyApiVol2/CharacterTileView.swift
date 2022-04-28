@@ -55,6 +55,7 @@ struct CharacterTileView: View {
 
 struct CharacterTileView_Previews: PreviewProvider {
     static var previews: some View {
-        CharacterTileView(character: Character(id: 5, name: "Rick", image: "api.RickImage.com", species: "Human"))
+        CharacterTileView(character: Character(id: 5, name: "Rick", image: "api.RickImage.com", species: "Human", status: "Alive", type: "God", gender: "Male", created: "Date of database addition"))
     }
 }
+
